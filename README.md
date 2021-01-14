@@ -1,7 +1,8 @@
 # Lumberjack ECS Device
 
-[![Build Status](https://travis-ci.org/bdurand/lumberjack_data_dog_device.svg?branch=master)](https://travis-ci.org/bdurand/lumberjack_data_dog_device)
-[![Maintainability](https://api.codeclimate.com/v1/badges/372103b5d762c765a16e/maintainability)](https://codeclimate.com/github/bdurand/lumberjack_data_dog_device/maintainability)
+![Continuous Integration](https://github.com/bdurand/lumberjack_ecs_device/workflows/Continuous%20Integration/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/97e98dc4d3d2565a3208/maintainability)](https://codeclimate.com/github/bdurand/lumberjack_ecs_device/maintainability)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
 
 This gem provides a logging device that produces JSON output that matches the standard fields defined for the [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/ecs-reference.html). This allows logs to be sent seamlessly to Kibana or other servers that expect this format.
 
