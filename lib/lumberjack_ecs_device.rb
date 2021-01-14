@@ -37,8 +37,17 @@ module Lumberjack
             "message" => object.inspect,
             "error" => exception_hash(object, @device)
           }
+        elsif object.is_a?(Hash)
+          { "message" => object }
+        elsif object.nil?
+          { "message" => nil }
         else
-          {"message" => object}
+          message = object.to_s
+          max_message_length = @device.max_message_length
+          if max_message_length && message.length > max_message_length
+            message = message[0, max_message_length]
+          end
+          { "message" => message }
         end
       end
     end
@@ -123,9 +132,14 @@ module Lumberjack
     # the payload size for an individual log entry.
     attr_accessor :backtrace_cleaner
 
-    def initialize(stream_or_device, backtrace_cleaner: nil)
+    # You can specify a limit on the message size. Messages over this size will be split into multiple
+    # log entries to prevent overflowing the limit on message size which makes the log entries unparseable.
+    attr_accessor :max_message_length
+
+    def initialize(stream_or_device, backtrace_cleaner: nil, max_message_length: nil)
       super(stream_or_device, mapping: ecs_mapping)
       self.backtrace_cleaner = backtrace_cleaner
+      self.max_message_length = max_message_length
     end
 
     private

@@ -18,6 +18,25 @@ describe Lumberjack::EcsDevice do
       })
     end
 
+    it "should log hashes in the message" do
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, {"foo" => "bar"}, "test", 12345, {})
+      data = device.entry_as_json(entry)
+      expect(data["message"]).to eq({"foo" => "bar"})
+    end
+
+    it "should convert other data types in the message to strings" do
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, ["foo", "bar"], "test", 12345, {})
+      data = device.entry_as_json(entry)
+      expect(data["message"]).to eq(["foo", "bar"].to_s)
+    end
+
+    it "should be able to limit the size of the message string" do
+      device.max_message_length = 50
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "x" * 100, "test", 12345, {})
+      data = device.entry_as_json(entry)
+      expect(data["message"]).to eq("x" * 50)
+    end
+
     it "should not include empty tags" do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", nil, 12345, {})
       data = device.entry_as_json(entry)
@@ -26,6 +45,18 @@ describe Lumberjack::EcsDevice do
         "log" => {"level" => entry.severity_label},
         "process" => {"pid" => entry.pid},
         "message" => entry.message
+      })
+    end
+
+    it "should include false tags" do
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", nil, 12345, {"success" => false})
+      data = device.entry_as_json(entry)
+      expect(data).to eq({
+        "@timestamp" => entry.time.strftime("%Y-%m-%dT%H:%M:%S.%6N%z"),
+        "log" => {"level" => entry.severity_label},
+        "process" => {"pid" => entry.pid},
+        "message" => entry.message,
+        "success" => false
       })
     end
 
@@ -39,6 +70,36 @@ describe Lumberjack::EcsDevice do
         "http" => {
           "response" => {"status_code" => 200},
           "request" => {"method" => "GET"}
+        }
+      })
+    end
+
+    it "should merge dot notated tags to nested JSON when hash is already included" do
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "http" => {"url" => "http://example.com"}, "http.status_code" => 200, "http.method" => "GET")
+      data = device.entry_as_json(entry)
+      expect(data).to eq({
+        "@timestamp" => entry.time.strftime("%Y-%m-%dT%H:%M:%S.%6N%z"),
+        "log" => {"level" => entry.severity_label},
+        "message" => entry.message,
+        "http" => {
+          "url" => "http://example.com",
+          "status_code" => 200,
+          "method" => "GET"
+        }
+      })
+    end
+
+    it "should merge hash into dot notated tags" do
+      entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "http" => {"url" => "http://example.com"}, "http.status_code" => 200, "http.method" => "GET")
+      data = device.entry_as_json(entry)
+      expect(data).to eq({
+        "@timestamp" => entry.time.strftime("%Y-%m-%dT%H:%M:%S.%6N%z"),
+        "log" => {"level" => entry.severity_label},
+        "message" => entry.message,
+        "http" => {
+          "url" => "http://example.com",
+          "status_code" => 200,
+          "method" => "GET"
         }
       })
     end
