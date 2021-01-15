@@ -126,6 +126,8 @@ module Lumberjack
       end
     end
 
+    ECS_TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.%6NZ"
+
     # You can specify a backtrace cleaner that will be called with exception backtraces before they
     # are added to the payload. You can use this to remove superfluous lines, compress line length, etc.
     # One use for it is to keep stack traces clean and prevent them from overflowing the limit on
@@ -136,10 +138,21 @@ module Lumberjack
     # log entries to prevent overflowing the limit on message size which makes the log entries unparseable.
     attr_accessor :max_message_length
 
-    def initialize(stream_or_device, backtrace_cleaner: nil, max_message_length: nil)
-      super(stream_or_device, mapping: ecs_mapping)
+    def initialize(stream_or_device, backtrace_cleaner: nil, max_message_length: nil, datetime_format: ECS_TIMESTAMP_FORMAT)
+      super(stream_or_device, mapping: ecs_mapping, datetime_format: datetime_format)
       self.backtrace_cleaner = backtrace_cleaner
       self.max_message_length = max_message_length
+      @utc_timestamps = !!datetime_format.match(/[^%]Z/)
+    end
+
+    def entry_as_json(entry)
+      original_time = entry.time
+      begin
+        entry.time = entry.time.utc if @utc_timestamps && !entry.time.utc?
+        super
+      ensure
+        entry.time = original_time
+      end
     end
 
     private
