@@ -38,16 +38,16 @@ module Lumberjack
             "error" => exception_hash(object, @device)
           }
         elsif object.is_a?(Hash)
-          { "message" => object }
+          {"message" => object}
         elsif object.nil?
-          { "message" => nil }
+          {"message" => nil}
         else
           message = object.to_s
           max_message_length = @device.max_message_length
           if max_message_length && message.length > max_message_length
             message = message[0, max_message_length]
           end
-          { "message" => message }
+          {"message" => message}
         end
       end
     end
