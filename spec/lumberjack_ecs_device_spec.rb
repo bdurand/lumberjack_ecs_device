@@ -9,7 +9,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", "test", 12345, "foo" => "bar", "baz" => "boo")
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "process" => {"name" => entry.progname, "pid" => entry.pid},
         "message" => entry.message,
@@ -41,7 +41,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", nil, 12345, {})
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "process" => {"pid" => entry.pid},
         "message" => entry.message
@@ -52,7 +52,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", nil, 12345, {"success" => false})
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "process" => {"pid" => entry.pid},
         "message" => entry.message,
@@ -64,7 +64,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "http.response.status_code" => 200, "http.request.method" => "GET")
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "message" => entry.message,
         "http" => {
@@ -78,7 +78,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "http" => {"url" => "http://example.com"}, "http.status_code" => 200, "http.method" => "GET")
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "message" => entry.message,
         "http" => {
@@ -93,7 +93,7 @@ describe Lumberjack::EcsDevice do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "http" => {"url" => "http://example.com"}, "http.status_code" => 200, "http.method" => "GET")
       data = device.entry_as_json(entry)
       expect(data).to eq({
-        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+        "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
         "log" => {"level" => entry.severity_label},
         "message" => entry.message,
         "http" => {
@@ -116,7 +116,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, error, nil, nil, {})
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => error.inspect,
           "error" => {
@@ -138,7 +138,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "an error occurred", nil, nil, "error" => error)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "error" => {
@@ -153,7 +153,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "an error occurred", nil, nil, "error" => "error string")
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "error" => "error string"
@@ -172,7 +172,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, error, nil, nil, {})
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => error.inspect,
           "error" => {
@@ -195,7 +195,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "an error occurred", nil, nil, "error" => error)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "error" => {
@@ -211,7 +211,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, error, nil, nil, {})
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => error.inspect,
           "error" => {
@@ -226,7 +226,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "an error occurred", nil, nil, "error" => error)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "error" => {
@@ -242,7 +242,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "duration" => 1.2)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "event" => {"duration" => 1_200_000_000}
@@ -253,7 +253,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "duration_ms" => 1200)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "event" => {"duration" => 1_200_000_000}
@@ -264,7 +264,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "duration_micros" => 1200)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "event" => {"duration" => 1_200_000}
@@ -275,7 +275,7 @@ describe Lumberjack::EcsDevice do
         entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "test", nil, nil, "duration_ns" => 12000)
         data = device.entry_as_json(entry)
         expect(data).to eq({
-          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%3NZ"),
+          "@timestamp" => entry.time.utc.strftime("%Y-%m-%dT%H:%M:%S.%6NZ"),
           "log" => {"level" => entry.severity_label},
           "message" => entry.message,
           "event" => {"duration" => 12000}
