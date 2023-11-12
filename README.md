@@ -3,6 +3,7 @@
 [![Continuous Integration](https://github.com/bdurand/lumberjack_ecs_device/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/bdurand/lumberjack_ecs_device/actions/workflows/continuous_integration.yml)
 [![Regression Test](https://github.com/bdurand/lumberjack_ecs_device/actions/workflows/regression_test.yml/badge.svg)](https://github.com/bdurand/lumberjack_ecs_device/actions/workflows/regression_test.yml)
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
+[![Gem Version](https://badge.fury.io/rb/lumberjack_ecs_device.svg)](https://badge.fury.io/rb/lumberjack_ecs_device)
 
 This gem provides a logging device that produces JSON output that matches the standard fields defined for the [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/ecs-reference.html). This allows logs to be sent seamlessly to Kibana or other servers that expect this format.
 
