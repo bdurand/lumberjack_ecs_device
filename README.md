@@ -1,7 +1,7 @@
 # Lumberjack ECS Device
 
-![Continuous Integration](https://github.com/bdurand/lumberjack_ecs_device/workflows/Continuous%20Integration/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/97e98dc4d3d2565a3208/maintainability)](https://codeclimate.com/github/bdurand/lumberjack_ecs_device/maintainability)
+
+
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
 
 This gem provides a logging device that produces JSON output that matches the standard fields defined for the [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/ecs-reference.html). This allows logs to be sent seamlessly to Kibana or other servers that expect this format.
@@ -36,3 +36,31 @@ logger.tag("http.request.method" => request.method, "url.full" => request.url) d
   )
 end
 ```
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem "lumberjack_ecs_device"
+```
+
+And then execute:
+```bash
+$ bundle
+```
+
+Or install it yourself as:
+```bash
+$ gem install lumberjack_ecs_device
+```
+
+## Contributing
+
+Open a pull request on GitHub.
+
+Please use the [standardrb](https://github.com/testdouble/standard) syntax and lint your code with `standardrb --fix` before submitting.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
