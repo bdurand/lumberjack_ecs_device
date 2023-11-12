@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = "lumberjack_ecs_device"
-  spec.version = File.read(File.expand_path("../VERSION", __FILE__)).strip
+  spec.version = File.read(File.join(__dir__, "VERSION")).strip
   spec.authors = ["Brian Durand"]
   spec.email = ["bbdurand@gmail.com"]
 
@@ -24,5 +24,9 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ["lib"]
 
+  spec.required_ruby_version = ">= 2.4"
+
   spec.add_dependency "lumberjack_json_device", ">=1.0"
+
+  spec.add_development_dependency "bundler"
 end
