@@ -52,7 +52,7 @@ module Lumberjack
       end
     end
 
-    # Formatter to remove empty tag values and expand the error tag if it is an exception.
+    # Formatter to remove empty attribute values and expand the error tag if it is an exception.
     class EcsTagsFormatter
       include ExceptionHash
 

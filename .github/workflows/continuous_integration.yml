@@ -28,7 +28,7 @@ jobs:
         include:
           - ruby: "ruby"
             standardrb: true
-          - ruby: "2.4"
+          - ruby: "2.7"
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby ${{ matrix.ruby }}
