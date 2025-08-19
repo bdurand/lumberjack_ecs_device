@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Lumberjack::EcsDevice do
+RSpec.describe Lumberjack::EcsDevice do
   let(:device) { Lumberjack::EcsDevice.new(output) }
   let(:output) { StringIO.new }
 

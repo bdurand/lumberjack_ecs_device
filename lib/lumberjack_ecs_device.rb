@@ -15,7 +15,7 @@ module Lumberjack
         hash = {"type" => exception.class.name}
         hash["message"] = exception.message unless exception.message.nil?
         trace = exception.backtrace
-        if trace && device && device.respond_to?(:backtrace_cleaner) && device.backtrace_cleaner
+        if trace && device&.respond_to?(:backtrace_cleaner) && device.backtrace_cleaner
           trace = device.backtrace_cleaner.call(trace)
         end
         hash["stack_trace"] = trace if trace
