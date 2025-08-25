@@ -4,6 +4,12 @@ RSpec.describe Lumberjack::EcsDevice do
   let(:device) { Lumberjack::EcsDevice.new(output) }
   let(:output) { StringIO.new }
 
+  describe "registry" do
+    it "should register the device" do
+      expect(Lumberjack::DeviceRegistry.device_class(:ecs)).to eq(Lumberjack::EcsDevice)
+    end
+  end
+
   describe "entry_as_json" do
     it "should output the fields the ECS format" do
       entry = Lumberjack::LogEntry.new(Time.now, Logger::INFO, "message", "test", 12345, "foo" => "bar", "baz" => "boo")

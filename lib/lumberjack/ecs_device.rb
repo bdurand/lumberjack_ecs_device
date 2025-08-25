@@ -8,6 +8,8 @@ module Lumberjack
   #
   # See https://www.elastic.co/guide/en/ecs/current/ecs-field-reference.html
   class EcsDevice < JsonDevice
+    DeviceRegistry.add(:ecs, self)
+
     module ExceptionHash
       protected
 
