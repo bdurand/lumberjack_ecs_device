@@ -2,6 +2,7 @@
 
 require "lumberjack_json_device"
 
+# Lumberjack is a simple, powerful, and fast logging library for Ruby.
 module Lumberjack
   # This Lumberjack device logs output to another device as JSON formatted text that maps fields
   # to the standard ECS JSON format.
@@ -10,6 +11,8 @@ module Lumberjack
   class EcsDevice < JsonDevice
     DeviceRegistry.add(:ecs, self)
 
+    # Mixin module that provides helper methods for formatting exception objects into hash format
+    # compatible with ECS error field structure.
     module ExceptionHash
       protected
 
@@ -33,6 +36,11 @@ module Lumberjack
         @device = device
       end
 
+      # Formats a message object into a hash with a "message" field and optionally an "error" field
+      # if the object is an exception.
+      #
+      # @param object [Object] The object to format (usually a message or exception)
+      # @return [Hash] A hash containing the formatted message and optional error information
       def call(object)
         if object.is_a?(Exception)
           {
@@ -62,6 +70,11 @@ module Lumberjack
         @device = device
       end
 
+      # Processes tags by removing empty values and converting exceptions to ECS error format.
+      # Also handles nested field names using dot notation.
+      #
+      # @param tags [Hash] The tags hash to process
+      # @return [Hash] A processed hash with empty values removed and exceptions converted
       def call(tags)
         copy = {}
         tags.each do |name, value|
@@ -115,11 +128,16 @@ module Lumberjack
       end
     end
 
+    # Formatter that converts duration values to ECS event.duration format with proper units.
     class DurationFormatter
       def initialize(multiplier)
         @multiplier = multiplier
       end
 
+      # Formats a numeric duration value by applying a multiplier and wrapping it in ECS event structure.
+      #
+      # @param value [Numeric, Object] The duration value to format
+      # @return [Hash] A hash containing the formatted duration in ECS event.duration format
       def call(value)
         if value.is_a?(Numeric)
           value = (value.to_f * @multiplier).round
@@ -128,6 +146,8 @@ module Lumberjack
       end
     end
 
+    # The default timestamp format used for ECS @timestamp field.
+    # Format: ISO 8601 with microseconds and UTC timezone (e.g., "2023-12-01T14:30:45.123456Z")
     ECS_TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.%6NZ"
 
     # You can specify a backtrace cleaner that will be called with exception backtraces before they
@@ -147,6 +167,10 @@ module Lumberjack
       @utc_timestamps = !!datetime_format.match(/[^%]Z/)
     end
 
+    # Converts a log entry to JSON format, ensuring timestamps are in UTC if required.
+    #
+    # @param entry [Lumberjack::LogEntry] The log entry to convert
+    # @return [String] The JSON representation of the log entry
     def entry_as_json(entry)
       original_time = entry.time
       begin
