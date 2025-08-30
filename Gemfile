@@ -7,7 +7,7 @@ gem "lumberjack_json_device", github: "bdurand/lumberjack_json_device", branch: 
 
 gem "dotenv"
 gem "rspec", "~> 3.10"
-gem "appraisal"
+gem "appraisal", require: false
 gem "standard", "~> 1.0", require: false
 gem "simplecov", require: false
 gem "yard", require: false
