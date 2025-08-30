@@ -26,6 +26,7 @@ jobs:
         include:
           - ruby: "ruby"
             standardrb: true
+            yard: true
           - ruby: "2.7"
     steps:
       - uses: actions/checkout@v4
@@ -50,4 +51,7 @@ jobs:
         run: bundle exec rake
       - name: standardrb
         if:   matrix.standardrb == true
-        run:  bundle exec rake standard
+        run:  bundle exec standardrb
+      - name: yard
+        if: matrix.yard == true
+        run:  bundle exec yard --fail-on-warnings
