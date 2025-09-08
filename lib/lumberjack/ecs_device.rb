@@ -9,6 +9,8 @@ module Lumberjack
   #
   # See https://www.elastic.co/guide/en/ecs/current/ecs-field-reference.html
   class EcsDevice < JsonDevice
+    VERSION = ::File.read(::File.join(__dir__, "..", "..", "VERSION")).strip.freeze
+
     DeviceRegistry.add(:ecs, self)
 
     # Mixin module that provides helper methods for formatting exception objects into hash format
