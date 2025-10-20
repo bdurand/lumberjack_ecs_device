@@ -163,7 +163,7 @@ module Lumberjack
     attr_accessor :max_message_length
 
     def initialize(stream_or_device, backtrace_cleaner: nil, max_message_length: nil, datetime_format: ECS_TIMESTAMP_FORMAT)
-      super(stream_or_device, mapping: ecs_mapping, datetime_format: datetime_format)
+      super(output: stream_or_device, mapping: ecs_mapping, datetime_format: datetime_format)
       self.backtrace_cleaner = backtrace_cleaner
       self.max_message_length = max_message_length
       @utc_timestamps = !!datetime_format.match(/[^%]Z/)
