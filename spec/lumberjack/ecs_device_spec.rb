@@ -1,8 +1,22 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Lumberjack::EcsDevice do
   let(:device) { Lumberjack::EcsDevice.new(output) }
   let(:output) { StringIO.new }
+
+  describe "VERSION" do
+    it "has a version number" do
+      expect(Lumberjack::EcsDevice::VERSION).not_to be nil
+    end
+  end
+
+  describe "registry" do
+    it "should register the device" do
+      expect(Lumberjack::DeviceRegistry.device_class(:ecs)).to eq(Lumberjack::EcsDevice)
+    end
+  end
 
   describe "entry_as_json" do
     it "should output the fields the ECS format" do
